@@ -12,3 +12,35 @@ I need this code, but don't know where, perhaps should make some middleware, don
 
 Go code!
 */
+
+const projects = require("./data/helpers/projectModel.js");
+
+const express = require("express");
+const app = express();
+const port = 3000;
+
+app.listen(port, () =>
+  console.log(`Example app listening at http://localhost:${port}`)
+);
+
+app.get("/projects", (req, res) => {
+  projects
+    .get()
+    .then((projects) => {
+      return res.json(projects);
+    })
+    .catch((error) => {
+      console.log("error");
+    });
+});
+
+app.route("/project/:project_id").get((req, res) => {
+  projects
+    .get(req.params.project_id)
+    .then((project) => {
+      if (!project) return res.status(404).json({ error: "No project found" });
+
+      return res.json(project);
+    })
+    .catch((error) => console.log("error"));
+});
