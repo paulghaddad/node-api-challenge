@@ -13,10 +13,10 @@ router.get('/', (req, res) => {
   })
 })
 
-router.get('/:action_id', (req, res) => {
-  const action_id = req.params.action_id
+router.get('/:actionId', (req, res) => {
+  const actionId = req.params.actionId
 
-  actions.get(action_id)
+  actions.get(actionId)
   .then(action => {
     if (!action)
         return res.status(404).json({error: 'A action with that id was not found.'})
@@ -34,11 +34,9 @@ router.post('/', (req, res) => {
   projects
   .get(action_data.project_id)
   .then(project => {
-    // Ensure the project exists
     if (!project)
         return res.status(404).json({error: 'A project with that id was not found.'})
 
-    // create action
     actions
     .insert(action_data)
     .then(action => {
@@ -53,15 +51,15 @@ router.post('/', (req, res) => {
   })
 })
 
-router.put('/:action_id', (req, res) => {
-  const action_id = req.params.action_id
+router.put('/:actionId', (req, res) => {
+  const actionId = req.params.actionId
   const {description, notes, completed} = req.body
 
   actions
-  .get(action_id)
+  .get(actionId)
   .then(action => {
     actions
-    .update(action_id, {description, notes, completed})
+    .update(actionId, {description, notes, completed})
     .then(action => {
       if (!action)
         return res.status(404).json({error: 'An action with that id was not found.'})
@@ -77,11 +75,11 @@ router.put('/:action_id', (req, res) => {
   })
 })
 
-router.delete('/:action_id', (req, res) => {
-  const action_id = req.params.action_id
+router.delete('/:actionId', (req, res) => {
+  const actionId = req.params.actionId
 
   actions
-  .remove(action_id)
+  .remove(actionId)
   .then(count => {
     if (!count)
         return res.status(404).json({error: 'An action with that id was not found.'})
